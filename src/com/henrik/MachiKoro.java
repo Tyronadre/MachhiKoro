@@ -7,7 +7,7 @@ import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 
-public class MachhiKoro {
+public class MachiKoro {
 
     public static void main(String[] args) {
 

@@ -4,36 +4,15 @@ import com.henrik.controller.Controller;
 import com.henrik.model.Player;
 import com.henrik.model.cards.types.*;
 
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-
 public abstract class Card {
 
-    protected Controller controller = Controller.getController();
     protected final int cost;
+    protected Controller controller = Controller.getController();
 
 
     public Card(int cost) {
         this.cost = cost;
     }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public String getName() {
-        return getCardType().toString().toUpperCase().charAt(0) + getCardType().toString().toLowerCase().substring(1);
-    }
-
-    abstract public ActivationType getActivationType();
-
-    abstract public void consume(Player owner);
-
-    abstract public CardType getCardType();
-
-   // abstract public CardType getActualCardType();
-
 
     public static Card getCardOfType(CardType type) {
 
@@ -53,11 +32,26 @@ public abstract class Card {
             case APFELPLANTAGE -> new Apfelplantage();
             case FERNSEHSENDER -> new Fernsehsender();
             case FAMILIEN_RESTAURANT -> new Familienrestaurant();
+            case EMPTY -> new EmptyCard();
         };
 
     }
 
+    public int getCost() {
+        return cost;
+    }
 
+    public String getName() {
+        return getCardType().toString().toUpperCase().charAt(0) + getCardType().toString().toLowerCase().substring(1);
+    }
+
+    abstract public ActivationType getActivationType();
+
+    abstract public void consume(Player owner);
+
+    // abstract public CardType getActualCardType();
+
+    abstract public CardType getCardType();
 
     public boolean isPflanzenFarm() {
         return false;
@@ -88,6 +82,10 @@ public abstract class Card {
     }
 
     public boolean isShop() {
+        return false;
+    }
+
+    public boolean isEmpty() {
         return false;
     }
 }

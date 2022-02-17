@@ -2,6 +2,8 @@ package com.henrik.controller;
 
 import com.henrik.model.Player;
 import com.henrik.model.cards.Card;
+import com.henrik.model.cards.CardType;
+import com.henrik.model.cards.types.EmptyCard;
 import com.henrik.model.cards.Monuments;
 import com.henrik.model.cards.types.Red;
 
@@ -16,7 +18,7 @@ public class Controller {
     private Player currentPlayer;
     private Player actOnPlayer;
     private List<Player> players = null;
-    private List<Card> cardStack;
+    public List<Card> cardStack;
     private ControllerState state;
     private List<Integer> diceResults;
 
@@ -122,7 +124,7 @@ public class Controller {
     }
 
     public Card drawCard() {
-        return cardStack.isEmpty() ? null : cardStack.remove(0);
+        return cardStack.isEmpty() ? Card.getCardOfType(CardType.EMPTY) : cardStack.remove(0);
     }
 
     public Player getCurrentPlayer() {
@@ -161,10 +163,6 @@ public class Controller {
 
     public ControllerState getState() {
         return state;
-    }
-
-    public boolean hasDrawCard() {
-        return cardStack.size() > 0;
     }
 
     public enum ControllerState {

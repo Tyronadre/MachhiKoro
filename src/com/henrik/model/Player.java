@@ -17,7 +17,7 @@ public class Player {
     Monuments monuments = new Monuments();
 
     List<Card> cards = new ArrayList<>(List.of(new StartWeizenFeld(), new StartBaekerei()));
-    int coins = 100;
+    int coins = 10000;
 
     public void addCard(Card card) {
         cards.add(card);
