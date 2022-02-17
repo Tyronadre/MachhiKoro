@@ -1,8 +1,10 @@
 package com.henrik.view;
 
+import com.henrik.controller.CardHelper;
 import com.henrik.controller.Controller;
 import com.henrik.model.cards.Card;
 import com.henrik.model.cards.CardType;
+import com.henrik.view.actionListeners.BuyCard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,45 +15,38 @@ import java.util.ArrayList;
 public class CardSelectPanel extends JPanel {
 
     Controller controller = Controller.getController();
-    private java.util.List<CardButton> buttons = new ArrayList<>();
+    private final java.util.List<CardButton> cardButtons = new ArrayList<>();
+    int numberOfCards;
 
-    public CardSelectPanel() {
-
-        this.setSize(1000,1000);
-        this.setLayout(new GridLayout(3,3));
-
-        fillGrid();
-    }
-
-
-    private void fillGrid() {
-
-        addCard(controller.drawCard());
-
-        while (buttons.size() < 9) addCard(controller.drawCard());
+    public CardSelectPanel(int numberOfCards) {
+        this.numberOfCards = numberOfCards;
+        this.setSize(CardHelper.getWidth() * numberOfCards / 3, CardHelper.getHeight() * 3);
+        this.setLayout(new GridLayout(numberOfCards / 3, 3));
+        while (cardButtons.size() < numberOfCards) drawCard(controller.drawCard());
 
     }
 
-    private void addCard(Card card) {
-
+    private void drawCard(Card card) {
         if (card == null) {
-            CardButton button = new CardButton(null);
-            add(button);
-            buttons.add(button);
+            CardButton cardButton = new CardButton(null);
+            add(cardButton);
+            cardButtons.add(cardButton);
             return;
         }
 
         CardButton existingCardButton = cardButtons.stream().filter(cardButton -> card.getCardType().equals(cardButton.getCardType())).findAny().orElse(null);
 
-        if (button != null) {
-            button.addCard(card);
+        if (existingCardButton != null) {
+            existingCardButton.addCard(card);
         } else {
-            button = createButton(card);
-            add(button);
-
+            existingCardButton = createButton(card);
+            add(existingCardButton);
         }
+    }
 
-
+    private void removeButton(CardButton cardButton){
+        cardButtons.remove(cardButton);
+        this.revalidate();
     }
 
     private CardButton createButton(Card card) {
@@ -69,16 +64,15 @@ public class CardSelectPanel extends JPanel {
     }
 
     private class CardButton extends JButton {
-
         java.util.List<Card> cards = new ArrayList<>();
         CardType cardType;
-        JLabel jLabel = new JLabel();
+        JLabel count = new JLabel();
 
         public CardButton(Card card) {
             if (card == null) return;
             setLayout(new BorderLayout());
             cardType = card.getCardType();
-            add(jLabel, BorderLayout.NORTH);
+            add(count, BorderLayout.NORTH);
             addCard(card);
         }
 
@@ -96,9 +90,10 @@ public class CardSelectPanel extends JPanel {
         }
 
         public void addCard(Card card) {
-            if (!card.getCardType().equals(cardType)) throw new IllegalArgumentException("card parameter has wrong type");
+            if (!card.getCardType().equals(cardType))
+                throw new IllegalArgumentException("card parameter has wrong type");
             cards.add(card);
-            jLabel.setText(cards.get(0).getName() + ", " + cards.size());
+            count.setText(cards.get(0).getName() + ", " + cards.size());
         }
 
         public CardType getCardType() {
