@@ -48,6 +48,7 @@ public class CardSelectPanel extends JPanel {
         } else {
             button = createButton(card);
             add(button);
+
         }
 
 
