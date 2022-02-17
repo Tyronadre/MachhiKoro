@@ -3,6 +3,7 @@ package com.henrik.controller;
 import com.henrik.model.Player;
 import com.henrik.model.cards.Card;
 import com.henrik.model.cards.Monuments;
+import com.henrik.model.cards.types.Red;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,11 +54,14 @@ public class Controller {
     public void play() {
 
         while (true) {
+
             if (state == ControllerState.CHOOSE_DICE_AMOUNT) {
                 if (!currentPlayer.hasMonument(Monuments.Monument.BAHNHOF)) {
                     rollDice(1);
-                    state = ControllerState.CHOOSE_CARD;
                 }
+            }
+            else if (state == ControllerState.DISTRIBUT_MONEY) {
+                distributeMoney();
             }
 
             if (checkForWin()) {
@@ -94,6 +98,25 @@ public class Controller {
         currentPlayer = players.indexOf(currentPlayer) == players.size() - 1 ? players.get(0) : players.get(players.indexOf(currentPlayer) + 1);
     }
 
+    public void distributeMoney() {
+        int currentPlayerIndex = players.indexOf(currentPlayer);
+        for (int i = currentPlayerIndex - 1; i != currentPlayerIndex; i--) {
+            if (i < 0) i = players.size() - 1;
+
+            for (Card Card : players.get(i).getCards().stream().filter(card -> card instanceof Red).collect(Collectors.toList())) {
+                drawCard().consume(players.get(i));
+            }
+        }
+
+        for (Card card : currentPlayer.getCards()) {
+            card.consume(currentPlayer);
+        }
+
+        if (currentPlayer.getCoins() == 0) currentPlayer.addCoins(1);
+
+        state = ControllerState.CHOOSE_CARD;
+    }
+
     public boolean checkForWin() {
         return currentPlayer.getAllMonuments().size() == Monuments.Monument.values().length;
     }
@@ -123,6 +146,7 @@ public class Controller {
         diceResults.clear();
         diceResults.add(random.nextInt(6) + 1);
         diceResults.add(amount == 1 ? null : random.nextInt(6) + 1);
+        state = ControllerState.DISTRIBUT_MONEY;
     }
 
     public int getDice() {
@@ -147,6 +171,7 @@ public class Controller {
         CHOOSE_CARD,
         CHOOSE_DICE_AMOUNT,
         PLAYER_SELECT,
-        PLAYER_WON
+        PLAYER_WON,
+        DISTRIBUT_MONEY
     }
 }

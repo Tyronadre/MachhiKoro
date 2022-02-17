@@ -20,13 +20,14 @@ public class CardSelectPanel extends JPanel {
 
     public CardSelectPanel(int numberOfCards) {
         this.numberOfCards = numberOfCards;
-        this.setSize(CardHelper.getWidth() * numberOfCards / 3, CardHelper.getHeight() * 3);
-        this.setLayout(new GridLayout(numberOfCards / 3, 3));
+        this.setSize(CardHelper.getWidth() * numberOfCards / 2, CardHelper.getHeight() * 2);
+        this.setLayout(new GridLayout(2, numberOfCards/2));
         while (cardButtons.size() < numberOfCards) drawCard(controller.drawCard());
 
     }
 
     private void drawCard(Card card) {
+        //TODO Wenn alle schon null sind
         if (card == null) {
             CardButton cardButton = new CardButton(null);
             add(cardButton);
@@ -46,7 +47,10 @@ public class CardSelectPanel extends JPanel {
 
     private void removeButton(CardButton cardButton){
         cardButtons.remove(cardButton);
+        remove(cardButton);
         this.revalidate();
+        this.repaint();
+        System.out.println(this.cardButtons.size());
     }
 
     private CardButton createButton(Card card) {
@@ -56,7 +60,9 @@ public class CardSelectPanel extends JPanel {
             if (controller.getCurrentPlayer().getCoins() >= card.getCost()) {
                 controller.getCurrentPlayer().removeCoins(card.getCost());
                 controller.getCurrentPlayer().addCard(button.removeCard());
-                System.out.println();
+                for (var temp:cardButtons){
+                    System.out.println(temp.count.getText());
+                }
             }
         });
         cardButtons.add(button);
@@ -69,8 +75,10 @@ public class CardSelectPanel extends JPanel {
         JLabel count = new JLabel();
 
         public CardButton(Card card) {
-            if (card == null) return;
-            setLayout(new BorderLayout());
+            if (card == null) {
+                cardType = CardType.EMPTY;
+                return;
+            }
             cardType = card.getCardType();
             add(count, BorderLayout.NORTH);
             addCard(card);

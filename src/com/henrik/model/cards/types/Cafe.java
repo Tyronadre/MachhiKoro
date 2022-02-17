@@ -12,6 +12,7 @@ public class Cafe extends Red{
 
     @Override
     public void consume(Player owner) {
+        if (owner.equals(controller.getCurrentPlayer())) return;
         if (controller.getDice() == 3)
             owner.addCoins(controller.getCurrentPlayer().removeCoins(1 + (owner.hasMonument(Monuments.Monument.EINKAUFSZENTRUM) ? 1 : 0)));
     }

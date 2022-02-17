@@ -12,6 +12,7 @@ public class Familienrestaurant extends Red {
 
     @Override
     public void consume(Player owner) {
+        if (owner.equals(controller.getCurrentPlayer())) return;
         if (controller.getDice() == 9 || controller.getDice() == 10)
             owner.addCoins(controller.getCurrentPlayer().removeCoins(2 + (owner.hasMonument(Monuments.Monument.EINKAUFSZENTRUM)? 1 : 0)));
     }
