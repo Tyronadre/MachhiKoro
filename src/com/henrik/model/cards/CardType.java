@@ -17,5 +17,6 @@ public enum CardType {
     BERGWERK,
     FAMILIEN_RESTAURANT,
     APFELPLANTAGE,
-    MARKTHALLE
+    MARKTHALLE,
+    EMPTY
 }

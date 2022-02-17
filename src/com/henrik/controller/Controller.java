@@ -114,6 +114,10 @@ public class Controller {
         return players.stream().filter(player -> player != currentPlayer).collect(Collectors.toList());
     }
 
+    public List<Player> getAllPlayers() {
+        return players;
+    }
+
     public void rollDice(int amount) {
         Random random = new Random();
         diceResults.clear();
