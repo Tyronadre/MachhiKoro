@@ -1,14 +1,14 @@
 package com.henrik.view;
 
 import com.henrik.controller.Controller;
-import com.henrik.model.Player;
 import com.henrik.model.cards.Card;
 import com.henrik.model.cards.CardType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CardSelectPanel extends JPanel {
 
@@ -41,7 +41,7 @@ public class CardSelectPanel extends JPanel {
             return;
         }
 
-        CardButton button = buttons.stream().filter(cardButton -> card.getCardType().equals(cardButton.getCardType())).findAny().orElse(null);
+        CardButton existingCardButton = cardButtons.stream().filter(cardButton -> card.getCardType().equals(cardButton.getCardType())).findAny().orElse(null);
 
         if (button != null) {
             button.addCard(card);
@@ -58,18 +58,13 @@ public class CardSelectPanel extends JPanel {
         CardButton button = new CardButton(card);
 
         button.addActionListener(e -> {
-
-            Player player = controller.getCurrentPlayer();
-
-            if (player.getCoins() >= card.getCost()) {
-                player.addCard(card);
-                player.removeCoins(card.getCost());
-                remove(button);
+            if (controller.getCurrentPlayer().getCoins() >= card.getCost()) {
+                controller.getCurrentPlayer().removeCoins(card.getCost());
+                controller.getCurrentPlayer().addCard(button.removeCard());
+                System.out.println();
             }
         });
-
-        buttons.add(button);
-
+        cardButtons.add(button);
         return button;
     }
 
@@ -89,7 +84,14 @@ public class CardSelectPanel extends JPanel {
 
         public Card removeCard() {
             Card card = cards.remove(cards.size() - 1);
-            if (cards.isEmpty()) buttons.remove(this);
+            if (cards.isEmpty()) {
+                removeButton(this);
+                //RESTOCK
+                while (cardButtons.size() < numberOfCards && controller.hasDrawCard())
+                    drawCard(controller.drawCard());
+                return card;
+            }
+            count.setText(cards.get(0).getName() + ", " + cards.size());
             return card;
         }
 

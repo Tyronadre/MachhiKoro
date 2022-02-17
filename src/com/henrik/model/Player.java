@@ -66,4 +66,13 @@ public class Player {
         }
     }
 
+    public List<Monuments.Monument> getAllMonuments() {
+        List<Monuments.Monument> result = new ArrayList<>();
+        for (Monuments.Monument mon : Monuments.Monument.values()) {
+            if (hasMonument(mon)) result.add(mon);
+        }
+
+        return result;
+    }
+
 }
