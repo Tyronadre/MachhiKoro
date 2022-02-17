@@ -1,4 +1,4 @@
-package com.henrik.view;
+package com.henrik.view.components;
 
 import com.henrik.controller.CardHelper;
 import com.henrik.controller.Controller;
@@ -8,6 +8,7 @@ import com.henrik.model.cards.CardType;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CardSelectPanel extends JPanel {
 
@@ -70,10 +71,14 @@ public class CardSelectPanel extends JPanel {
         java.util.List<Card> cards = new ArrayList<>();
         CardType cardType;
         JLabel count = new JLabel();
-        ImageIcon image;
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(Objects.requireNonNull(ResourceHandler.getCardImage(cardType)).getScaledInstance(CardHelper.getWidth(),CardHelper.getHeight(),Image.SCALE_DEFAULT),0,0,null);
+        }
 
         public CardButton(Card card) {
-            super(ResourceHandler.getCardImage(card.getCardType()));
             if (card.isEmpty()) {
                 setEnabled(false);
             }

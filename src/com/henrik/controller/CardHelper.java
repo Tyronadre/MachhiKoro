@@ -47,11 +47,11 @@ public class CardHelper {
     }
 
     public static int getWidth() {
-        return 100;
+        return 150;
     }
 
     public static int getHeight(){
-        return 200;
+        return 300;
     }
 
     private static class Tupel {

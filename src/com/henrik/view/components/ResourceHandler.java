@@ -1,16 +1,16 @@
-package com.henrik.view;
+package com.henrik.view.components;
 
-import com.henrik.controller.CardHelper;
 import com.henrik.model.cards.CardType;
+import com.henrik.model.cards.Monuments;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 
 public class ResourceHandler {
 
-    public static ImageIcon getCardImage(CardType cardType){
+    public static BufferedImage getCardImage(CardType cardType){
         URL url = switch (cardType){
             case WEIZENFELD -> ResourceHandler.class.getClassLoader().getResource("cardPictures/weizenfeld.png");
             case CAFE -> ResourceHandler.class.getClassLoader().getResource("cardPictures/cafe.png");
@@ -29,10 +29,26 @@ public class ResourceHandler {
             case FERNSEHSENDER -> ResourceHandler.class.getClassLoader().getResource("cardPictures/fernsehsender.png");
             case FAMILIEN_RESTAURANT -> ResourceHandler.class.getClassLoader().getResource("cardPictures/familien_restaurant.png");
         };
-        if (url ==  null)
-            return new ImageIcon();
-        ImageIcon imageIcon = new ImageIcon(url);
-        imageIcon.setImage(imageIcon.getImage().getScaledInstance(CardHelper.getWidth(),CardHelper.getHeight(), Image.SCALE_DEFAULT));
-        return imageIcon;
+        try {
+            return ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static BufferedImage getMonument(Monuments.Monument monument, boolean b) {
+        URL url = switch (monument) {
+            case BAHNHOF -> b ? ResourceHandler.class.getClassLoader().getResource("monumentPictures/bahnhof_on.png") : ResourceHandler.class.getClassLoader().getResource("monumentPictures/bahnhof_off.png") ;
+            case EINKAUFSZENTRUM -> b ? ResourceHandler.class.getClassLoader().getResource("monumentPictures/einkaufszentrum_on.png") : ResourceHandler.class.getClassLoader().getResource("monumentPictures/einkaufszentrum_off.png") ;
+            case FREIZEITPARK -> b ? ResourceHandler.class.getClassLoader().getResource("monumentPictures/freizeitpark_on.png") : ResourceHandler.class.getClassLoader().getResource("monumentPictures/freizeitpark_off.png") ;
+            case FUNKTURM -> b ? ResourceHandler.class.getClassLoader().getResource("monumentPictures/funkturm_on.png") : ResourceHandler.class.getClassLoader().getResource("monumentPictures/funkturm_off.png") ;
+        };
+        try {
+            return ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

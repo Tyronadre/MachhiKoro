@@ -15,9 +15,15 @@ import java.util.UUID;
 
 public class Player {
     Monuments monuments = new Monuments();
-
+    String name;
     List<Card> cards = new ArrayList<>(List.of(new StartWeizenFeld(), new StartBaekerei()));
     int coins = 10000;
+
+    public Player(String name) {
+        this.name = name;
+    }
+
+    public String getName(){return name;}
 
     public void addCard(Card card) {
         cards.add(card);

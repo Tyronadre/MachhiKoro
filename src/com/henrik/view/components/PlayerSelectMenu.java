@@ -1,6 +1,4 @@
-package com.henrik.view;
-
-import com.henrik.controller.Controller;
+package com.henrik.view.components;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
