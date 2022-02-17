@@ -2,7 +2,7 @@ package com.henrik.view.components;
 
 import com.henrik.controller.CardHelper;
 import com.henrik.model.cards.CardType;
-import com.henrik.view.MainView;
+import com.henrik.view.MainFrame;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -13,14 +13,14 @@ import java.awt.event.MouseMotionListener;
 import java.util.Objects;
 
 public class DraggableCard extends JComponent {
-    private final MainView mainView = MainView.getMainView();
+    private final MainFrame mainView = MainFrame.getMainView();
     private final CardType cardType;
     private int screenX = 0;
     private int screenY = 0;
     private int myX = 0;
     private int myY = 0;
-    private int maxX = MainView.getMainView().getWidth() - CardHelper.getWidth();
-    private int maxY = MainView.getMainView().getHeight() - CardHelper.getHeight();
+    private int maxX = MainFrame.getMainView().getWidth() - CardHelper.getWidth();
+    private int maxY = MainFrame.getMainView().getHeight() - CardHelper.getHeight();
 
     public DraggableCard(CardType cardType) {
         this.cardType = cardType;
