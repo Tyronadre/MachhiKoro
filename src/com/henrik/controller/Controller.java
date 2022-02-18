@@ -38,7 +38,7 @@ public class Controller {
         state = ControllerState.PLAYER_SELECT;
 
         //TODO implement player selection
-        acceptPlayerSelect(PlayerHelper.getInitPlayers(4));
+        acceptPlayerSelect(PlayerHelper.getInitPlayers(playerCount));
         state = ControllerState.CHOOSE_DICE_AMOUNT;
        // play();
     }

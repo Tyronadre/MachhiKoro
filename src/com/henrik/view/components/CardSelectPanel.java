@@ -4,6 +4,8 @@ import com.henrik.controller.CardHelper;
 import com.henrik.controller.Controller;
 import com.henrik.model.cards.Card;
 import com.henrik.model.cards.CardType;
+import com.henrik.view.GameBoard;
+import com.henrik.view.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,18 +13,20 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class CardSelectPanel extends JPanel {
+    Dimension size;
+    GameBoard gameBoard;
 
     private final java.util.List<CardButton> cardButtons = new ArrayList<>();
     Controller controller = Controller.getController();
     int numberOfCards;
     int lastDeletedPos = -1;
 
-    public CardSelectPanel(int numberOfCards) {
+    public CardSelectPanel(int numberOfCards, GameBoard gameBoard) {
         this.numberOfCards = numberOfCards;
-        this.setSize(CardHelper.getWidth() * numberOfCards / 2, CardHelper.getHeight() * 2);
+        this.gameBoard = gameBoard;
+        size = new Dimension(CardHelper.getWidth() * numberOfCards / 2, CardHelper.getHeight() * 2);
         this.setLayout(new GridLayout(2, numberOfCards / 2));
         while (cardButtons.size() < numberOfCards) drawCard(controller.drawCard());
-
     }
 
     private void drawCard(Card card) {
@@ -58,6 +62,7 @@ public class CardSelectPanel extends JPanel {
             if (controller.getCurrentPlayer().getCoins() >= card.getCost()) {
                 controller.getCurrentPlayer().removeCoins(card.getCost());
                 controller.getCurrentPlayer().addCard(button.removeCard());
+                gameBoard.updateGUI();
             }
         });
         if (lastDeletedPos != -1)
@@ -118,4 +123,19 @@ public class CardSelectPanel extends JPanel {
         }
     }
 
+
+    @Override
+    public Dimension getPreferredSize() {
+        return size;
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return size;
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        return size;
+    }
 }

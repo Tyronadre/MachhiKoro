@@ -4,6 +4,7 @@ import com.henrik.model.cards.Card;
 import com.henrik.model.cards.CardType;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -52,6 +53,10 @@ public class CardHelper {
 
     public static int getHeight(){
         return 300;
+    }
+
+    public static Dimension getMonumentDim() {
+        return new Dimension(100,150);
     }
 
     private static class Tupel {
