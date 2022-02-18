@@ -10,7 +10,7 @@ public class PlayerSelectMenu extends JPanel {
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,1000);
+        frame.setSize(500,500);
 
         frame.add(new PlayerSelectMenu());
         frame.setVisible(true);
@@ -18,29 +18,76 @@ public class PlayerSelectMenu extends JPanel {
 
     }
 
-        JTable playerTable = new JTable();
+    JTable playerTable = new JTable();
 
-        public PlayerSelectMenu() {
+    public PlayerSelectMenu() {
 
-            setLayout(new BorderLayout());
-
-            DefaultTableModel model = new DefaultTableModel(new String[] {"Name"}, 0);
-
+        JButton button;
+        setLayout(new GridBagLayout());
 
 
 
-            playerTable.setModel(model);
+        addLabel(0, 0.47);
+        addLabelTest(0, 0.47);
 
-            add(playerTable, BorderLayout.CENTER);
+        addTextField();
 
-            JTable addTable = new JTable();
+        addLabel(2, 0.47);
+        addLabelTest(2, 0.47);
 
-            addTable.add(new TextField(""));
-            addTable.add(new Button("Test"));
+        addButton();
+    }
 
-            add(addTable, BorderLayout.SOUTH);
+    private void addButton() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridy = 7;
+        c.gridx = 1;
+        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.CENTER;
+        add(new Button("Start"), c);
+    }
+
+    private void addLabel(int i, double weighty) {
+        GridBagConstraints c= new GridBagConstraints();
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridx = 0;
+        c.gridy = i;
+        c.weightx = 0.2;
+        c.weighty = weighty;
+        add(new JLabel(Integer.toString(i)), c);
+    }
+
+    private void addLabelTest(int i, double weighty) {
+        GridBagConstraints c= new GridBagConstraints();
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridx = 2;
+        c.gridy = i;
+        c.weightx = 0.2;
+        c.weighty = weighty;
+        add(new JLabel(Integer.toString(i)), c);
+    }
+
+    private void addTextField() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 0.6;
+        c.weighty = 0.1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        //tf.setSize((int) (getSize().width*0.4), tf.getHeight());
+        add(new TextFieldPanel(), c);
+    }
+
+    private class TextFieldPanel extends JPanel {
+
+        public TextFieldPanel() {
+            setLayout(new GridLayout(6,1));
+
+            for (int i = 0; i < 6; i++) {
+                add(new TextField());
+            }
         }
-
-
+    }
 
 }
